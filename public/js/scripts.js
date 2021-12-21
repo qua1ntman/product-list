@@ -113,28 +113,20 @@ let dataToBack = async (sku, name, price, type) => {
         name: name.value,
         price: price.value,
         type: type.value,
-        // attrArr: {}
     }
 
 
     let attrSet = () => {
         fields.forEach(field => {
         const {name, value} = field
-
-        // attributes.attrArr[name] = value;
         attributes[name] = value;
 
         })
     }
 
-    // attributes[attribute] =
-
-    console.log(attributes)
-    // const data = JSON.stringify(formData)
-    // console.log(data)
-
+    
     await attrSet()
-    await fetch("http://sw-back/php/addInProdList.php", {
+    await fetch("https://product-list-sw.000webhostapp.com/php/addInProdList.php", {
     method: 'POST',
     body: JSON.stringify(attributes),
     mode: 'no-cors',
@@ -147,9 +139,6 @@ let dataToBack = async (sku, name, price, type) => {
         return response.text()
 
     }).then(response => {
-        console.log(response)
-        // if(status === 200)
-        //     location.href="../index.html"
 
     }).catch(err => console.log(err))
 
