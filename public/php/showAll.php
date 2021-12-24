@@ -5,10 +5,12 @@
     class ShowAll extends Dtbshst {
 
         public function show() {
+
             $result = $this->connect()->query("SELECT * FROM `product_list` ");
             $count = $this->connect()->query("SELECT count(*) FROM `product_list` ");
 
             $num_rows = mysqli_fetch_row($count)[0];
+
             for ($i = 0; $i < $num_rows; $i++) {
                 $object = $result->fetch_assoc();
                 $typeTable = strtolower($object['type']);
@@ -24,6 +26,7 @@
 
         }
     }
+
 
     $show = new ShowAll;
     $show->show();

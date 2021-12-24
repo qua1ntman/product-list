@@ -1,5 +1,5 @@
 
-let changeNumberOfProducts = () => {
+let changeNumberOfProducts = () => { // Get DB data
 
 
     fetch("https://product-list-sw.000webhostapp.com/php/showAll.php", {
@@ -9,6 +9,7 @@ let changeNumberOfProducts = () => {
             status=response.status
             return response.text()
     }).then(response => {
+        console.log(response)
         let responseArrs = response.split(', ').filter(item => item !== "")
         let newArr = []
         responseArrs.map(item =>
@@ -17,36 +18,48 @@ let changeNumberOfProducts = () => {
         return newArr
 
     }).then(responseArrs => {
-
-        responseArrs.length>1
-            ? responseArrs.map(arr => addElem(arr))
-            : addElem(responseArrs[0])
+        console.log(responseArrs)
+        if (responseArrs.length===0) {
+            addElem(0)
+        } else if (responseArrs.length===1) {
+            addElem(responseArrs[0])
+        } else {
+            responseArrs.map(arr => addElem(arr))
+        }
     }).catch(err => alert(err))
 };
 
 
 
-let addElem = async (arr) => {
+let addElem = (arr) => { // Create product blocks
+
 
     const productList = document.getElementById('product-list')
+
+    if(arr===0) {
+        return productList.insertAdjacentHTML("beforeend",
+            '<div class="empty-product-list"><h4>Product list is empty</h4></div>'
+        )
+    }
+
     let attrDiv = ''
     if (arr.type==='DVD') {
         attrDiv=`Size: ${arr.size} MB`
     } else if (arr.type==='Furniture') {
-        attrDiv=`Demention: ${arr.length}x${arr.height}x${arr.width}`
+        attrDiv=`Dimensions: ${arr.length}x${arr.height}x${arr.width}`
     } else {
         attrDiv=`Weight: ${arr.weight} KG`
     }
 
 
-    await productList.insertAdjacentHTML("beforeend",
-    `<div class="product" id=${arr.sku},${arr.type}>\n` +
+    productList.insertAdjacentHTML("beforeend",
+    `<div class="product" id=\"${arr.sku},${arr.type}\">\n` +
         '     <input class="delete-checkbox" type="checkbox" id="delete"/>\n' +
         '     <div class="product-info" >\n' +
         `         <div class="spaces">${arr.sku}</div>\n`+
         `         <div class="spaces">${arr.name}</div>\n` +
         `         <div class="spaces">${Number(arr.price).toFixed(2)} $</div>\n`+
-        `         <div class="spaces" id="attr">${attrDiv}</div>\n`+
+        `         <div class="spaces">${attrDiv}</div>\n`+
         '     </div>\n' +
         ' </div>')
 
@@ -60,12 +73,13 @@ deleteAllBtn.addEventListener('click',  () => {
     nedDel.forEach(item => {
             if(item.querySelector('input:checked')) {
                 dataToBack(item.id)
+                console.log(item.id)
             }
         }
     )
 })
 
-let dataToBack = async (info) => {
+let dataToBack = async (info) => { // Remove of products with checked checkpoints
 
     const attributes = {}
 

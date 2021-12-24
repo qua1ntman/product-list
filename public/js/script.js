@@ -1,16 +1,11 @@
-// let submit = document.querySelector('#send');
 let status;
 const save = document.getElementById('btn-save')
 
-// const attributes = document.getElementById('attributes-form')
 
-
-
-
-
-const choseAttributes = () => {
+const choseAttributes = () => { // Choose attribute form
     let type = document.getElementById('productType').value
     const attributes = document.getElementById('attributes-form')
+
     if (type === 'DVD') {
         attributes.removeChild(attributes.firstChild)
         return attributes.innerHTML =
@@ -67,47 +62,27 @@ const choseAttributes = () => {
             '              <h5>Please, provide weight</h5>\n' +
             '          </div>\n' +
             ' </div>'
-
     }
 }
 
 
-let attributesData = () => {
-    let type = document.getElementById('productType').value
 
-    if (type === 'DVD') {
-        let size = document.getElementById('size').value
-        return [size]
-    } else if (type === 'Furniture') {
-        let height = document.getElementById('height').value
-        let width = document.getElementById('width').value
-        let length = document.getElementById('length').value
-        return [height, width, length]
-
-    } else if (type === 'Book') {
-        let weight = document.getElementById('weight').value
-        return [weight]
-
-    }
-}
-
-
-save.addEventListener('click', () => {
+save.addEventListener('click', () => { // Add main info about product
     let sku = document.getElementById('sku'),
     name = document.getElementById('name'),
     price = document.getElementById('price'),
-    type = document.getElementById('productType'),
-    attributesDataValue = attributesData()
+    type = document.getElementById('productType')
 
-    return dataToBack(sku, name, price, type, attributesDataValue)
+    return dataToBack(sku, name, price, type)
 })
 
 
 
 
-let dataToBack = async (sku, name, price, type) => {
+let dataToBack = async (sku, name, price, type) => { // Add product in DB
 
     const fields = document.querySelectorAll('#size, #height, #width, #length, #weight')
+
     let attributes = {
         sku: sku.value,
         name: name.value,
@@ -120,12 +95,16 @@ let dataToBack = async (sku, name, price, type) => {
         fields.forEach(field => {
         const {name, value} = field
         attributes[name] = value;
+            console.log(typeof value)
 
         })
     }
 
     
     await attrSet()
+
+    await console.log(typeof attributes.sku, typeof attributes.name, typeof attributes.price, typeof attributes.type)
+
     await fetch("https://product-list-sw.000webhostapp.com/php/addInProdList.php", {
     method: 'POST',
     body: JSON.stringify(attributes),
@@ -138,10 +117,8 @@ let dataToBack = async (sku, name, price, type) => {
         status=response.status
         return response.text()
 
-    }).then(response => {
-
     }).catch(err => console.log(err))
 
-    await document.getElementById('product_form').reset()
+    document.getElementById('product_form').reset()
 };
 
