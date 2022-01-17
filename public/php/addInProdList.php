@@ -1,5 +1,4 @@
 <?php
-
     include_once "connect.php";
 
     class AddInProdList extends Dtbshst {
