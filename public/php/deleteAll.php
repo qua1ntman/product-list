@@ -1,5 +1,4 @@
 <?php
-
     include_once "connect.php";
 
     class DeleteAll extends Dtbshst {
@@ -27,10 +26,6 @@
             $this->connect()->close();
         }
     }
-
     $result = new DeleteAll();
     $result->delete();
-
-
-
 ?>
