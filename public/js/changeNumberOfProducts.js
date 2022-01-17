@@ -107,7 +107,3 @@ let dataToBack = async (info) => { // Remove of products with checked checkpoint
         .catch(err => console.log(err))
     window.location.reload()
 };
-
-
-
-
