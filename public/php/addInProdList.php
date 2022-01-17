@@ -23,10 +23,6 @@
             $type = $data["type"];
 
             $typeTable = strtolower($type);
-
-
-
-
             $attributes = array_slice($data, 4);
 
             $valArr="'$sku',";
@@ -43,8 +39,6 @@
             $valArr=trim($valArr, ',');
             $keyArr=trim($keyArr, ',');
 
-
-
             $this->connect()->query("INSERT INTO `product_list` (`sku`,`name`,`price`,`type`) VALUES ('$sku','$name','$price','$type')");
             $this->connect()->query("INSERT INTO `$typeTable` ($keyArr) VALUES ($valArr)");
 
@@ -52,12 +46,7 @@
 
             $this->connect()->close();
         }
-
     }
-
     $result = new AddInProdList();
     $result->add();
-
-
 ?>
-
